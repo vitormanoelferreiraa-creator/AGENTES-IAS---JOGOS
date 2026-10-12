@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <title>2D detalhado vs 3D real</title>
+  <style>
+    body {
+      margin: 0;
+      background: #15110f;
+      color: #e8dcc0;
+      font: 14px system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0 0 4px
+    }
+
+    p {
+      color: #aaa;
+      font-size: 13px;
+      margin: 0 0 16px;
+      text-align: center;
+      max-width: 680px
+    }
+
+    .row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+
+    .panel {
+      background: #1b1712;
+      border: 2px solid #5a4a2e;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      width: 320px
+    }
+
+    .panel h2 {
+      font-size: 14px;
+      margin: 4px 0 8px;
+      color: #e6c229
+    }
+
+    .panel .tag {
+      font-size: 11px;
+      color: #888;
+      margin-top: 6px
+    }
+
+    canvas {
+      background: #000;
+      border-radius: 6px;
+      image-rendering: pixelated
+    }
+
+    #c3d {
+      image-rendering: auto
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Comparação: 2D bem detalhado × 3D real (modelos simples)</h1>
+  <p>Os dois lados mostram o MESMO personagem (Espadachim), só a tecnologia muda. Use isso pra decidir o caminho —
+    depois eu aplico a escolha no jogo inteiro.</p>
+  <div class="row">
+    <div class="panel">
+      <h2>Opção 1 — 2D desenhado (como o jogo é hoje, só mais detalhado)</h2>
+      <canvas id="c2d" width="300" height="340"></canvas>
+      <div class="tag">Vetorial, leve, rápido de fazer evoluir, já é o estilo do jogo atual.</div>
+    </div>
+    <div class="panel">
+      <h2>Opção 2 — 3D real feito só com código (Three.js)</h2>
+      <canvas id="c3d" width="300" height="340"></canvas>
+      <div class="tag">Gira de verdade em 3 dimensões, mas sem um programa de modelagem por trás o resultado fica mais
+        "boneco de blocos" que a arte 2D.</div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- PAINEL 1: personagem 2D detalhado (reaproveita o mesmo estilo do jogo) ----------
+    const g = document.getElementById('c2d').getContext('2d');
+    function rr(x, y, w, h, r, f) { g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = f; g.fill(); g.lineWidth = 1.5; g.strokeStyle = '#1a1010'; g.stroke() }
+    function tri(a, b, c, d, e2, f, fill) { g.beginPath(); g.moveTo(a, b); g.lineTo(c, d); g.lineTo(e2, f); g.closePath(); g.fillStyle = fill; g.fill(); g.lineWidth = 1.2; g.strokeStyle = '#1a1010'; g.stroke() }
+    const BLADES = [{ c: ['#f5f8ff', '#cfd9ec', '#8f9db4', '#5c6478'], curve: 0, hilt: '#d8b34a' }];
+    function sword(ox, oy, ang, len) {
+      const V = BLADES[0]; g.save(); g.translate(ox, oy); g.rotate(ang);
+      g.fillStyle = '#00000030'; g.beginPath(); g.ellipse(len * .55, 1.8, len * .5, 2.4, 0, 0, 7); g.fill();
+      const gr = g.createLinearGradient(0, -3, 0, 3); gr.addColorStop(0, V.c[0]); gr.addColorStop(.4, V.c[1]); gr.addColorStop(.55, V.c[2]); gr.addColorStop(1, V.c[3]);
+      g.beginPath(); g.moveTo(3, -2.6); g.quadraticCurveTo(len * .5, -2.4, len - 6, -1.1); g.lineTo(len, 0); g.lineTo(len - 6, 1.1); g.lineTo(3, 2.6); g.closePath();
+      g.fillStyle = gr; g.fill(); g.lineWidth = .8; g.strokeStyle = '#20242c'; g.stroke();
+      g.fillStyle = V.hilt; g.fillRect(-2.5, -4.5, 3.5, 9); g.fillStyle = '#241a10'; g.fillRect(-11, -1.8, 8.5, 3.6); g.restore()
+    }
+    const pal = { body: '#0d0f0d', hair: '#d9c35a', accent: '#5eff6a', shadow: '#070807', skin: '#f2c9a0' };
+    function drawChar2D(t) {
+      const cx = 150, y0 = 170 + Math.sin(t / 500) * 2, f = 1;
+      g.clearRect(0, 0, 300, 340);
+      g.fillStyle = '#241f1a'; g.fillRect(0, 0, 300, 340);
+      for (let i = 0; i < 300; i += 30)for (let j = 0; j < 340; j += 30) { g.fillStyle = (i + j) % 60 == 0 ? '#2a241e' : '#262019'; g.fillRect(i, j, 30, 30) }
+      // aura
+      const auraG = g.createRadialGradient(cx, y0 + 12, 2, cx, y0 + 12, 60); auraG.addColorStop(0, pal.accent + '55'); auraG.addColorStop(1, pal.accent + '00');
+      g.fillStyle = auraG; g.beginPath(); g.arc(cx, y0 + 12, 60, 0, 7); g.fill();
+      // sombra no chão
+      g.fillStyle = '#0008'; g.beginPath(); g.ellipse(cx, y0 + 86, 40, 10, 0, 0, 7); g.fill();
+      // pernas/botas
+      rr(cx - 16, y0 + 66, 13, 20, 5, '#120f0d'); rr(cx + 3, y0 + 66, 13, 20, 5, '#120f0d');
+      // manto longo (como a skin "Manto da Névoa Negra")
+      const sw = Math.sin(t / 300) * 8; g.fillStyle = pal.body; g.globalAlpha = .96;
+      g.beginPath(); g.moveTo(cx - 18, y0 + 34); g.lineTo(cx - 38 + sw, y0 + 108); g.lineTo(cx + 8 + sw * .6, y0 + 104); g.lineTo(cx + 16, y0 + 34); g.closePath(); g.fill();
+      g.strokeStyle = pal.accent; g.lineWidth = 2.4; g.globalAlpha = .9;
+      g.beginPath(); g.moveTo(cx - 18, y0 + 34); g.lineTo(cx - 38 + sw, y0 + 108); g.stroke();
+      g.beginPath(); g.moveTo(cx + 16, y0 + 34); g.lineTo(cx + 8 + sw * .6, y0 + 104); g.stroke(); g.globalAlpha = 1;
+      // torso
+      rr(cx - 18, y0 + 38, 36, 30, 10, pal.body);
+      g.fillStyle = pal.shadow + 'cc'; g.fillRect(cx + 2, y0 + 38, 16, 30);
+      g.fillStyle = '#ffffff26'; g.fillRect(cx - 16, y0 + 40, 8, 18);
+      g.strokeStyle = pal.accent + 'cc'; g.lineWidth = 2; g.beginPath(); g.moveTo(cx - 16, y0 + 54); g.lineTo(cx + 14, y0 + 54); g.stroke();
+      // braços
+      rr(cx - 27, y0 + 40, 10, 20, 4, pal.skin); rr(cx + 17, y0 + 36, 10, 24, 4, pal.skin);
+      // cabeça
+      rr(cx - 22, y0 + 4, 44, 38, 18, pal.skin); g.fillStyle = '#0000001a'; g.beginPath(); g.ellipse(cx + 12, y0 + 22, 13, 18, 0, 0, 7); g.fill();
+      g.fillStyle = '#ffffff22'; g.beginPath(); g.ellipse(cx - 10, y0 + 16, 8, 13, 0, 0, 7); g.fill();
+      // cabelo espetado loiro
+      for (let i = 0; i < 6; i++)tri(cx - 24 + i * 9, y0 + 10, cx - 14 + i * 9, y0 + 10, cx - 19 + i * 9, y0 - 14 - (i % 2) * 8, pal.hair);
+      rr(cx - 23, y0 + 2, 46, 12, 6, pal.hair);
+      // olhos
+      g.fillStyle = '#5ac8e0'; g.fillRect(cx - 13, y0 + 22, 7, 12); g.fillRect(cx + 5, y0 + 22, 7, 12);
+      g.fillStyle = '#1a1010'; g.fillRect(cx - 13, y0 + 27, 7, 7); g.fillRect(cx + 5, y0 + 27, 7, 7);
+      g.fillStyle = '#fff'; g.fillRect(cx - 11, y0 + 22, 2, 4); g.fillRect(cx + 7, y0 + 22, 2, 4);
+      // espada erguida
+      sword(cx + 26, y0 + 34, -1.15 + Math.sin(t / 900) * .08, 78);
+      g.fillStyle = '#fff'; g.font = 'bold 13px sans-serif'; g.textAlign = 'center'; g.fillText('Espadachim', cx, y0 + 118);
+      requestAnimationFrame(drawChar2D)
+    }
+    requestAnimationFrame(drawChar2D);
+
+    // ---------- PAINEL 2: modelo 3D de verdade (Three.js, geometrias simples) ----------
+    const s3 = document.createElement('script'); s3.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s3.onload = initThree; s3.onerror = () => { document.getElementById('c3d').parentElement.querySelector('.tag').textContent = 'Não consegui carregar o Three.js (sem internet?). Abra com conexão ativa para ver o modelo 3D.' };
+    document.head.appendChild(s3);
+    function initThree() {
+      const W = 300, H = 260, cvs = document.getElementById('c3d');
+      const renderer = new THREE.WebGLRenderer({ canvas: cvs, antialias: true }); renderer.setSize(W, H);
+      const scene = new THREE.Scene(); scene.background = new THREE.Color(0x241f1a);
+      const camera = new THREE.PerspectiveCamera(32, W / H, 0.1, 100); camera.position.set(0, 1.1, 6);
+      scene.add(new THREE.AmbientLight(0x556070, 1.1));
+      const dl = new THREE.DirectionalLight(0xfff2d8, 1.1); dl.position.set(3, 5, 4); scene.add(dl);
+      const rim = new THREE.DirectionalLight(0x5eff6a, .6); rim.position.set(-3, 2, -3); scene.add(rim);
+      const grp = new THREE.Group(); scene.add(grp);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x14160f, roughness: .6, metalness: .2 });
+      const skinMat = new THREE.MeshStandardMaterial({ color: 0xf2c9a0, roughness: .8 });
+      const hairMat = new THREE.MeshStandardMaterial({ color: 0xd9c35a, roughness: .5 });
+      const accMat = new THREE.MeshStandardMaterial({ color: 0x5eff6a, emissive: 0x1a6a20, roughness: .4 });
+      const metalMat = new THREE.MeshStandardMaterial({ color: 0xd9d9e0, metalness: .9, roughness: .25 });
+      // torso
+      const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.34, 0.75, 10), bodyMat); torso.position.y = 0.9; grp.add(torso);
+      // cabeça
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.34, 16, 16), skinMat); head.position.y = 1.75; grp.add(head);
+      // cabelo (cone simples)
+      const hair = new THREE.Mesh(new THREE.ConeGeometry(0.36, 0.32, 8), hairMat); hair.position.y = 1.98; grp.add(hair);
+      // braços
+      const armGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.65, 8);
+      const armL = new THREE.Mesh(armGeo, skinMat); armL.position.set(-0.52, 0.95, 0); armL.rotation.z = 0.25; grp.add(armL);
+      const armR = new THREE.Mesh(armGeo, skinMat); armR.position.set(0.55, 1.15, 0); armR.rotation.z = -0.9; grp.add(armR);
+      // pernas
+      const legGeo = new THREE.CylinderGeometry(0.13, 0.1, 0.7, 8);
+      const legL = new THREE.Mesh(legGeo, bodyMat); legL.position.set(-0.2, 0.15, 0); grp.add(legL);
+      const legR = new THREE.Mesh(legGeo, bodyMat); legR.position.set(0.2, 0.15, 0); grp.add(legR);
+      // manto (plano simples)
+      const cape = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.3, 4, 4), new THREE.MeshStandardMaterial({ color: 0x0d0f0d, side: THREE.DoubleSide, roughness: .7 }));
+      cape.position.set(0, 0.75, -0.3); cape.rotation.x = 0.15; grp.add(cape);
+      const trimGeo = new THREE.BoxGeometry(0.03, 1.3, 0.02);
+      const trimL = new THREE.Mesh(trimGeo, accMat); trimL.position.set(-0.44, 0.75, -0.29); grp.add(trimL);
+      const trimR = new THREE.Mesh(trimGeo, accMat); trimR.position.set(0.44, 0.75, -0.29); grp.add(trimR);
+      // espada
+      const bladeGeo = new THREE.BoxGeometry(0.06, 1.1, 0.015);
+      const blade = new THREE.Mesh(bladeGeo, metalMat); blade.position.set(0.9, 1.9, 0); blade.rotation.z = -0.3; grp.add(blade);
+      const hilt = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.22, 8), new THREE.MeshStandardMaterial({ color: 0xd8b34a, metalness: .7, roughness: .3 }));
+      hilt.position.set(0.78, 1.35, 0); hilt.rotation.z = -0.3; grp.add(hilt);
+      grp.position.y = -0.9;
+      (function loop() { grp.rotation.y += 0.012; renderer.render(scene, camera); requestAnimationFrame(loop) })();
+    }
+  </script>
+</body>
+
+</html>

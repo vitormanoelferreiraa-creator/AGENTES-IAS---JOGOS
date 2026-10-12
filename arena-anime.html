@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Arena Anime 2D</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#1b1712;color:#e8dcc0;font:14px system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:12px}
+canvas{border:4px solid #5a4a2e;image-rendering:pixelated;background:#000;max-width:100%;width:672px;height:auto;touch-action:manipulation}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center;width:672px;max-width:100%}
+select,button{background:#3a2f1c;color:#e8dcc0;border:1px solid #7a6238;padding:6px 10px;font:inherit;cursor:pointer;border-radius:6px}
+button:hover{background:#54431f}
+#log{width:672px;max-width:100%;height:110px;overflow:auto;background:#120f0b;border:1px solid #5a4a2e;padding:6px;box-sizing:border-box;font:12px monospace;white-space:pre-wrap}
+#shop{width:672px;max-width:100%;background:#120f0b;border:1px solid #5a4a2e;padding:8px;margin-top:6px;display:none}
+@media (max-width:700px){
+ body{padding:6px}
+ .bar{gap:5px}
+ .bar button,.bar select,.bar label{font-size:12px;padding:5px 7px}
+ #log,#skp,#vid,#shop{font-size:11px}
+}
+</style></head><body>
+<canvas id="c" width="672" height="540"></canvas>
+<div class="bar">
+ <label>A <select id="sa"></select></label><label>B <select id="sb"></select></label>
+ <button onclick="train(+sa.value)">Treinar agente A</button>
+ <button onclick="train(+sb.value)">Treinar agente B</button>
+ <button onclick="startLeisure()">🏞️ Local de lazer</button>
+ <button onclick="startWorld()">Cidade (caçar e evoluir)</button>
+ <button onclick="start(false,true)">Modo autônomo (luta e treina sozinho)</button>
+ <button onclick="start(false)">Uma luta</button>
+ <button onclick="auto=false;logEl.textContent+='\nModo autônomo parado.'">Parar</button>
+ <label><input type="checkbox" id="ia" onchange="AI.on=this.checked;if(AI.on)testIA()"> Cérebro Ollama</label> <input id="mod" value="llama3.2" size="12" title="nome do modelo no Ollama">
+ <label><input type="checkbox" id="tm" onchange="trainMode=this.checked"> Modo treino (vida infinita)</label>
+ <label>Vídeo de <select id="rc"></select></label>
+ <button onclick="recordSpecial(+rc.value)">🎬 Gravar golpe especial</button>
+ <button onclick="resetAll()">Zerar treino</button>
+ <button onclick="const d=document.getElementById('shop');d.style.display=d.style.display=='none'?'block':'none';renderShop()">🛍️ Lojinha de roupas</button>
+</div>
+<div id="shop">
+ <label>Personagem: <select id="shopChar" onchange="renderShop()"></select></label>
+ <div id="shopBody" style="margin-top:6px"></div>
+</div>
+<div id="vid" style="width:672px;max-width:100%"></div>
+<div id="log">Escolha dois lutadores. Treine os agentes para evoluírem as habilidades e depois lute.
+Controles: WASD/setas movem, teclas 1-6 usam habilidades (a 6ª é o golpe especial, mais forte).</div>
+<div id="skp" style="width:672px;max-width:100%;font:12px monospace;background:#120f0b;border:1px solid #5a4a2e;padding:6px;box-sizing:border-box;margin-top:6px;line-height:1.5"></div>
+<script src="./js/arena-anime.js"></script>
+</body>
+</html>
