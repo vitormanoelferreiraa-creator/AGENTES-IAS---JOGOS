@@ -1,0 +1,83 @@
+# AI AGENTS RESEARCH & DEVELOPMENT — PROPRIETARY LICENSE
+
+**Copyright © 2026 Vitor Manoel Ferreira. All Rights Reserved.**
+
+## 1. Ownership and Intellectual Property
+
+This repository and its original contents, including source code, agent architectures, orchestration logic, prompts authored by the developer, experimental methodologies, custom configurations, documentation, and original implementations, are protected by applicable intellectual property laws.
+
+All rights to original materials are reserved by the copyright holder, except where expressly stated otherwise or where third-party rights apply.
+
+## 2. Permitted Use
+
+The following activities are permitted:
+
+- Viewing the publicly available source code for educational and research purposes.
+- Studying the general programming concepts demonstrated by the project.
+- Referencing the project's documentation for personal learning.
+- Discussing the project's publicly documented concepts, with appropriate attribution where applicable.
+
+These permissions do not grant a general license to reproduce or redistribute the project's protected code.
+
+## 3. Restricted Activities
+
+Without prior written authorization from the copyright holder, you may not:
+
+- Reproduce or redistribute substantial portions of the original source code.
+- Publish modified or derivative versions containing the project's protected code.
+- Incorporate the project's original implementations into commercial products or services.
+- Sell, sublicense, or commercially exploit the project's protected materials.
+- Republish the project or its substantial portions under another name or as your own work.
+- Remove copyright notices or misrepresent authorship of the original implementation.
+
+Nothing in this section restricts uses permitted by applicable law or rights that cannot legally be excluded.
+
+## 4. Artificial Intelligence and Research
+
+This project may contain experiments involving locally executed language models, including models accessed through Ollama, agent behavior, prompt engineering, orchestration, and automated workflows.
+
+Access to this repository does not grant ownership of the author's original implementations or permission to commercially exploit them.
+
+Third-party models, model weights, datasets, libraries, APIs, and other external resources remain subject to their respective licenses and terms.
+
+This license does not claim ownership over artificial intelligence as a field, general ideas, mathematical methods, independently developed implementations, or outputs to the extent that such rights cannot legally be claimed.
+
+## 5. Third-Party Components
+
+Dependencies and third-party components included in or used by this project remain governed by their respective licenses.
+
+Where a third-party license grants rights that differ from the restrictions stated here, that license continues to apply to the relevant component.
+
+## 6. Disclaimer of Warranty
+
+The project is provided "AS IS", without warranties of any kind, express or implied, to the extent permitted by applicable law.
+
+The author makes no guarantee regarding the accuracy, reliability, security, availability, or suitability of experimental agents or their outputs.
+
+Users are responsible for evaluating the behavior and consequences of any implementation they choose to use.
+
+## 7. Authorization and Commercial Licensing
+
+Requests for permissions beyond those expressly granted by this license, including commercial use, redistribution, integration into proprietary products, or other uses requiring authorization, must be submitted to the copyright holder.
+
+GitHub: https://github.com/vitormanoelferreiraa-creator
+
+Written authorization must be obtained before engaging in activities that require permission under this license.
+
+## 8. No Transfer of Ownership
+
+Access to this repository does not transfer ownership of the project's original intellectual property.
+
+Contributions, forks, and external integrations do not automatically grant rights to the original project's protected materials beyond those permitted by applicable law and any separately agreed terms.
+
+## 9. Governing Law
+
+This license is subject to applicable law. Nothing in this document excludes mandatory legal protections or rights that cannot lawfully be waived.
+
+## 10. Reservation of Rights
+
+All rights not expressly granted are reserved by the copyright holder.
+
+**Author:** Vitor Manoel Ferreira  
+**Year:** 2026  
+**License:** Proprietary — All Rights Reserved
