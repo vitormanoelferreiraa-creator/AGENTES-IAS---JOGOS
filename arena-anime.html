@@ -28,10 +28,15 @@ button:hover{background:#54431f}
  <button onclick="auto=false;logEl.textContent+='\nModo autônomo parado.'">Parar</button>
  <label><input type="checkbox" id="ia" onchange="AI.on=this.checked;if(AI.on)testIA()"> Cérebro Ollama</label> <input id="mod" value="llama3.2" size="12" title="nome do modelo no Ollama">
  <label><input type="checkbox" id="tm" onchange="trainMode=this.checked"> Modo treino (vida infinita)</label>
+ <label title="Mapa 3D: cenário e personagens em 3D. Sprite 3D: só os personagens em 3D sobre o mapa 2D. 2D: visual clássico">Visão <select id="vm" onchange="setVMode(this.value)"><option value="mapa">Mapa 3D</option><option value="sprite">Sprite 3D</option><option value="2d">2D clássico</option></select></label>
+ <span class="bar" id="cam3" style="margin:0;width:auto;display:none"><button title="Girar câmera (Q)" onclick="camRot(-15)">⟲</button><button title="Girar câmera (E)" onclick="camRot(15)">⟳</button><button title="Afastar (-)" onclick="camZoom(1/1.15)">−</button><button title="Aproximar (+)" onclick="camZoom(1.15)">＋</button>
+  <select id="vq" title="Tamanho do pixel" onchange="setVQ(this.value)"><option value="2">Pixel grosso</option><option value="1">Pixel fino</option><option value="3">Pixel enorme (rápido)</option></select>
+  <label title="WASD/setas andam em relação à câmera"><input type="checkbox" id="ctl" onchange="M3.manual=this.checked;document.getElementById('dpad').style.display=this.checked?'inline-flex':'none'"> Controlar</label>
+  <span id="dpad" style="display:none;gap:3px"><button data-d="-1,0">◀</button><button data-d="0,-1">▲</button><button data-d="0,1">▼</button><button data-d="1,0">▶</button></span></span>
  <label>Vídeo de <select id="rc"></select></label>
  <button onclick="recordSpecial(+rc.value)">🎬 Gravar golpe especial</button>
  <button onclick="resetAll()">Zerar treino</button>
- <button onclick="const d=document.getElementById('shop');d.style.display=d.style.display=='none'?'block':'none';renderShop()">🛍️ Lojinha de roupas</button>
+ <button onclick="const d=document.getElementById('shop');d.style.display=getComputedStyle(d).display=='none'?'block':'none';renderShop()">🛍️ Lojinha de roupas</button>
 </div>
 <div id="shop">
  <label>Personagem: <select id="shopChar" onchange="renderShop()"></select></label>
@@ -41,6 +46,7 @@ button:hover{background:#54431f}
 <div id="log">Escolha dois lutadores. Treine os agentes para evoluírem as habilidades e depois lute.
 Controles: WASD/setas movem, teclas 1-6 usam habilidades (a 6ª é o golpe especial, mais forte).</div>
 <div id="skp" style="width:672px;max-width:100%;font:12px monospace;background:#120f0b;border:1px solid #5a4a2e;padding:6px;box-sizing:border-box;margin-top:6px;line-height:1.5"></div>
+
 <script src="./js/arena-anime.js"></script>
 </body>
 </html>

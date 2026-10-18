@@ -1,0 +1,9 @@
+Personagens articulados — Arena Anime
+=====================================
+5 modelos glTF 2.0 (.glb), cada um com esqueleto de juntas (nós), peças rígidas,
+textura de rosto e 9 animações: Parado, Andar, Correr, Ataque, Magia, GolpeFinal,
+Dano, Morte, Vitoria.
+
+Abrir/refinar: Blender (Arquivo > Importar > glTF), gltf-viewer, Godot, Unity (glTFast) etc.
+Convenção: personagem olha para +Z, +Y para cima, esquerda do personagem = +X.
+Animações amostradas a 30 fps. Para trocar skin/ajustar poses use personagens-3d.html.
